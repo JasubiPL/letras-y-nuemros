@@ -12,19 +12,45 @@ export const THEME = {
       secondary: '#636E72',
       light: '#B2BEC3',
     },
+    pastel: {
+      pink: '#FFB3C6',
+      peach: '#FFCBA4',
+      yellow: '#FFF0A0',
+      mint: '#B5EAD7',
+      sky: '#AED9F7',
+      lavender: '#C9B8F5',
+      coral: '#FFADAD',
+      lilac: '#DDB8F5',
+    },
+  },
+  fonts: {
+    // Baloo 2 — títulos, botones, elementos destacados
+    title: 'Baloo2_400Regular',
+    titleMedium: 'Baloo2_500Medium',
+    titleSemiBold: 'Baloo2_600SemiBold',
+    titleBold: 'Baloo2_700Bold',
+    titleExtraBold: 'Baloo2_800ExtraBold',
+    // Nunito — texto de cuerpo, instrucciones, labels
+    body: 'Nunito_400Regular',
+    bodySemiBold: 'Nunito_600SemiBold',
+    bodyBold: 'Nunito_700Bold',
   },
   typography: {
     heading: {
-      fontFamily: 'Quicksand-Bold',
+      fontFamily: 'Baloo2_800ExtraBold',
       fontSize: 28,
     },
     body: {
-      fontFamily: 'Quicksand-Regular',
+      fontFamily: 'Nunito_400Regular',
       fontSize: 18,
     },
     button: {
-      fontFamily: 'Quicksand-SemiBold',
+      fontFamily: 'Baloo2_700Bold',
       fontSize: 20,
+    },
+    label: {
+      fontFamily: 'Nunito_600SemiBold',
+      fontSize: 14,
     },
   },
   spacing: {

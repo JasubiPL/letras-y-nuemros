@@ -1,4 +1,16 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import {
+  Baloo2_400Regular,
+  Baloo2_500Medium,
+  Baloo2_600SemiBold,
+  Baloo2_700Bold,
+  Baloo2_800ExtraBold,
+} from '@expo-google-fonts/baloo-2';
+import {
+  Nunito_400Regular,
+  Nunito_600SemiBold,
+  Nunito_700Bold,
+} from '@expo-google-fonts/nunito';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -17,7 +29,14 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Baloo2_400Regular,
+    Baloo2_500Medium,
+    Baloo2_600SemiBold,
+    Baloo2_700Bold,
+    Baloo2_800ExtraBold,
+    Nunito_400Regular,
+    Nunito_600SemiBold,
+    Nunito_700Bold,
   });
 
   useEffect(() => {

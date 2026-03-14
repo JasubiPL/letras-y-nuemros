@@ -1,13 +1,10 @@
-import { Pressable, PressableProps } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-
-type Props = PressableProps & {
-  children: React.ReactNode;
-};
+import type { PressableBounceProps } from './types';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export function PressableBounce({ children, onPress, style, ...props }: Props) {
+export function PressableBounce({ children, onPress, style, ...props }: PressableBounceProps) {
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({

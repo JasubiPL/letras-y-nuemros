@@ -1,6 +1,143 @@
 import { THEME } from './theme';
+import type { CartoonButtonTheme, CartoonColor } from '@components/ui/types';
 
-export default {
+export const CARTOON_BUTTON_THEMES: Record<CartoonColor, CartoonButtonTheme> = {
+  pink: {
+    bg: '#FFB3C6',
+    shadow: '#C46A84',
+    highlight: '#FFD9E4',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  pinkAccent: {
+    bg: '#FF5C8A',
+    shadow: '#B52B58',
+    highlight: '#FFABC3',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  purple: {
+    bg: '#C9B8F5',
+    shadow: '#7A5EC4',
+    highlight: '#E3D9FA',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  purpleAccent: {
+    bg: '#9A6CFF',
+    shadow: '#5D37B7',
+    highlight: '#C9AEFF',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  red: {
+    bg: '#FFADAD',
+    shadow: '#C46060',
+    highlight: '#FFD4D4',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  redAccent: {
+    bg: '#FF4D6D',
+    shadow: '#B2223B',
+    highlight: '#FF9FB1',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  brown: {
+    bg: '#C78B5A',
+    shadow: '#8A5732',
+    highlight: '#E3B88F',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  brownAccent: {
+    bg: '#A86A3D',
+    shadow: '#6E3F22',
+    highlight: '#D09A6D',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  blue: {
+    bg: '#AED9F7',
+    shadow: '#5090C0',
+    highlight: '#D4ECFB',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  blueAccent: {
+    bg: '#3C9DFF',
+    shadow: '#1E5FB2',
+    highlight: '#92C9FF',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  yellow: {
+    bg: '#FFF0A0',
+    shadow: '#B8A030',
+    highlight: '#FFF8D0',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  yellowAccent: {
+    bg: '#FFD84A',
+    shadow: '#B38912',
+    highlight: '#FFEE9A',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  green: {
+    bg: '#B5EAD7',
+    shadow: '#58A882',
+    highlight: '#D8F4EA',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  greenAccent: {
+    bg: '#48D597',
+    shadow: '#258660',
+    highlight: '#97EBC8',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  orange: {
+    bg: '#FFCBA4',
+    shadow: '#C47840',
+    highlight: '#FFE4CC',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  orangeAccent: {
+    bg: '#FF9A3D',
+    shadow: '#B35A1D',
+    highlight: '#FFC98C',
+    border: '#2A2A2A',
+    text: '#FFF8F8',
+  },
+  gold: {
+    bg: '#F6C445',
+    shadow: '#B5861F',
+    highlight: '#FFE08A',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  silver: {
+    bg: '#C8CFD9',
+    shadow: '#8892A0',
+    highlight: '#E8EDF5',
+    border: '#2A2A2A',
+    text: '#2A2A2A',
+  },
+  diamond: {
+    bg: '#7DE3FF',
+    shadow: '#2E8EB8',
+    highlight: '#C9F7FF',
+    border: '#2A2A2A',
+    text: '#083247',
+  },
+};
+
+const Colors = {
   light: {
     text: THEME.colors.text.primary,
     background: THEME.colors.background,
@@ -32,3 +169,5 @@ export default {
     ],
   },
 };
+
+export default Colors;

@@ -18,6 +18,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@components/useColorScheme';
+import AudioManager from '@services/audio/AudioManager';
+import { SOUND_MAP } from '@services/audio/sounds';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -60,6 +62,43 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    let isMounted = true;
+    const audio = AudioManager.getInstance();
+
+    const startBgMusic = async () => {
+      try {
+        await audio.preloadSounds(SOUND_MAP);
+        await audio.playBgMusic(
+          require('@assets/music/background-music.mp3'),
+          true
+        );
+
+        if (!isMounted) {
+          await audio.cleanup();
+          return;
+        }
+      } catch (error) {
+        console.warn('No se pudo reproducir la música de fondo:', error);
+      }
+    };
+
+    void startBgMusic();
+
+    return () => {
+      isMounted = false;
+      const stopBgMusic = async () => {
+        try {
+          await audio.cleanup();
+        } catch (error) {
+          console.warn('No se pudo detener la música de fondo:', error);
+        }
+      };
+
+      void stopBgMusic();
+    };
+  }, []);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

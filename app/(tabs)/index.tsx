@@ -11,11 +11,15 @@ import Animated, {
 import { View } from '@components/Themed';
 import { OutlinedRainbowText } from '@components/ui/OutlinedRainbowText';
 import { useSound } from '@hooks/useSound';
+import { useChildThemeStore } from '@stores/useChildThemeStore';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const { playTap } = useSound();
   const girlScale = useSharedValue(1);
   const boyScale = useSharedValue(1);
+  const { setChildType } = useChildThemeStore();
 
   const girlAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: girlScale.value }],
@@ -53,7 +57,11 @@ export default function HomeScreen() {
             <Animated.View style={girlAnimatedStyle}>
               <Pressable
                 style={styles.pressable}
-                onPress={playTap}
+                onPress={() =>{
+                  playTap();
+                  setChildType('girl');
+                  router.push('/(tabs)/menu');
+                }}
                 onPressIn={() => {
                   girlScale.value = withSpring(0.92, { damping: 36, stiffness: 420 });
                 }}
@@ -74,7 +82,11 @@ export default function HomeScreen() {
             <Animated.View style={boyAnimatedStyle}>
               <Pressable
                 style={styles.pressable}
-                onPress={playTap}
+                onPress={() => {
+                  playTap();
+                  setChildType('boy');
+                  router.push('/(tabs)/menu');
+                }}
                 onPressIn={() => {
                   boyScale.value = withSpring(0.92, { damping: 36, stiffness: 420 });
                 }}

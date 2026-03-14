@@ -1,4 +1,3 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import {
   Baloo2_400Regular,
   Baloo2_500Medium,
@@ -11,6 +10,7 @@ import {
   Nunito_600SemiBold,
   Nunito_700Bold,
 } from '@expo-google-fonts/nunito';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -104,14 +104,6 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="activity/[activityId]"
-          options={{ headerShown: false, presentation: 'fullScreenModal' }}
-        />
-        <Stack.Screen
-          name="activity/complete"
-          options={{ headerShown: false, presentation: 'modal' }}
-        />
       </Stack>
     </ThemeProvider>
   );

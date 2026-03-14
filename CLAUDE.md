@@ -10,7 +10,7 @@ React Native + Expo SDK 55 | TypeScript | Zustand | Reanimated 4
 | Categoría | Herramienta |
 |-----------|-------------|
 | Framework | Expo SDK 55, React Native 0.83 |
-| Navegación | Expo Router (file-based) |
+| Navegación | Expo Router (file-based) — Stack únicamente, **NUNCA usar Tabs** |
 | Estado | Zustand 5 + AsyncStorage (persistido) |
 | Animaciones | React Native Reanimated 4 + Lottie |
 | Gestos | React Native Gesture Handler |
@@ -28,11 +28,9 @@ numeros-y-letras/
 │   ├── _layout.tsx                 # Root layout (fonts, theme, splash)
 │   ├── +html.tsx                   # Web HTML config
 │   ├── +not-found.tsx              # 404
-│   ├── (tabs)/                     # Tab navigation
-│   │   ├── _layout.tsx             # 3 tabs: Inicio, Progreso, Ajustes
-│   │   ├── index.tsx               # Home — elegir Letras o Números
-│   │   ├── progress.tsx            # Progreso por materia
-│   │   └── settings.tsx            # Música, vibración, reset
+│   ├── (tabs)/                     # Grupo de rutas (sin tab bar)
+│   │   ├── _layout.tsx             # Stack layout, sin tabs
+│   │   └── index.tsx               # Home — elegir Letras o Números
 │   └── activity/                   # Activity screens (fullscreen modal)
 │       ├── [activityId].tsx        # Pantalla de actividad dinámica
 │       └── complete.tsx            # Celebración post-actividad
@@ -156,6 +154,7 @@ Feedback verbal: "¡Muy bien!" / "Inténtalo de nuevo".
 - **Types**: PascalCase (`Activity`, `Subject`)
 - **Idioma UI**: Español
 - **Estructura componente**: Imports → Types → Component → Styles
+- **Navegación**: NUNCA usar `<Tabs>` de expo-router. Toda la navegación es con `Stack` y botones con `router.push()`
 
 ---
 

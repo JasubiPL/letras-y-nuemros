@@ -16,9 +16,20 @@ type ThemeProps = {
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 
+type LightTheme = typeof Colors.light;
+type DarkTheme = typeof Colors.dark;
+type SharedThemeColorName = keyof LightTheme & keyof DarkTheme;
+type ThemeColorName = {
+  [K in SharedThemeColorName]: LightTheme[K] extends string
+    ? DarkTheme[K] extends string
+      ? K
+      : never
+    : never;
+}[SharedThemeColorName];
+
 export function useThemeColor(
   props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  colorName: ThemeColorName
 ) {
   const theme = useColorScheme();
   const colorFromProps = props[theme];

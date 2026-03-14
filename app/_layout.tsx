@@ -49,7 +49,7 @@ export default function RootLayout() {
     if (loaded) {
       setTimeout(() => {
         SplashScreen.hideAsync();
-      },2000);
+      },1000);
     }
   }, [loaded]);
 

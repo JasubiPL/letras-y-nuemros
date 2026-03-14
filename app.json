@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "numeros-y-letras",
+    "name": "Numeros y Letras",
     "slug": "numeros-y-letras",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/logo-icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "numerosyletras",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -19,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#000000",
-        "foregroundImage": "./assets/images/logo-icon.png"
+        "foregroundImage": "./assets/images/icon.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.numerosyletras"
@@ -27,7 +27,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router",

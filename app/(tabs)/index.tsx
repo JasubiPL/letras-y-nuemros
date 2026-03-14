@@ -1,15 +1,13 @@
 import { THEME } from '@constants/theme';
-import { Image, ImageBackground, Pressable, StyleSheet } from 'react-native';
+import { Image, ImageBackground, StyleSheet } from 'react-native';
 import Animated, {
   FadeInDown,
   FadeInUp,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
 } from 'react-native-reanimated';
 
 import { View } from '@components/Themed';
 import { OutlinedRainbowText } from '@components/ui/OutlinedRainbowText';
+import { PressableBounce } from '@components/ui/PressableBounce';
 import { useSound } from '@hooks/useSound';
 import { useChildThemeStore } from '@stores/useChildThemeStore';
 import { useRouter } from 'expo-router';
@@ -17,17 +15,7 @@ import { useRouter } from 'expo-router';
 export default function HomeScreen() {
   const router = useRouter();
   const { playTap } = useSound();
-  const girlScale = useSharedValue(1);
-  const boyScale = useSharedValue(1);
   const { setChildType } = useChildThemeStore();
-
-  const girlAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: girlScale.value }],
-  }));
-
-  const boyAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: boyScale.value }],
-  }));
 
   return (
     <ImageBackground
@@ -54,54 +42,38 @@ export default function HomeScreen() {
           entering={FadeInDown.duration(700).delay(180)}
         >
           <Animated.View entering={FadeInDown.duration(600).delay(260)}>
-            <Animated.View style={girlAnimatedStyle}>
-              <Pressable
-                style={styles.pressable}
-                onPress={() =>{
-                  playTap();
-                  setChildType('girl');
-                  router.push('/(tabs)/menu');
-                }}
-                onPressIn={() => {
-                  girlScale.value = withSpring(0.92, { damping: 36, stiffness: 420 });
-                }}
-                onPressOut={() => {
-                  girlScale.value = withSpring(1, { damping: 36, stiffness: 420 });
-                }}
-              >
-                <Image
-                  source={require('@assets/images/girl-child-button.webp')}
-                  accessibilityLabel="Soy Niña"
-                  style={styles.childButton}
-                  resizeMode="contain"
-                />
-              </Pressable>
-            </Animated.View>
+            <PressableBounce
+              style={styles.pressable}
+              onPress={() => {
+                playTap();
+                setChildType('girl');
+                router.push('/(tabs)/menu');
+              }}
+            >
+              <Image
+                source={require('@assets/images/girl-child-button.webp')}
+                accessibilityLabel="Soy Niña"
+                style={styles.childButton}
+                resizeMode="contain"
+              />
+            </PressableBounce>
           </Animated.View>
           <Animated.View entering={FadeInDown.duration(600).delay(360)}>
-            <Animated.View style={boyAnimatedStyle}>
-              <Pressable
-                style={styles.pressable}
-                onPress={() => {
-                  playTap();
-                  setChildType('boy');
-                  router.push('/(tabs)/menu');
-                }}
-                onPressIn={() => {
-                  boyScale.value = withSpring(0.92, { damping: 36, stiffness: 420 });
-                }}
-                onPressOut={() => {
-                  boyScale.value = withSpring(1, { damping: 36, stiffness: 420 });
-                }}
-              >
-                <Image
-                  source={require('@assets/images/boy-child-button.webp')}
-                  accessibilityLabel="Soy Niño"
-                  style={styles.childButton}
-                  resizeMode="contain"
-                />
-              </Pressable>
-            </Animated.View>
+            <PressableBounce
+              style={styles.pressable}
+              onPress={() => {
+                playTap();
+                setChildType('boy');
+                router.push('/(tabs)/menu');
+              }}
+            >
+              <Image
+                source={require('@assets/images/boy-child-button.webp')}
+                accessibilityLabel="Soy Niño"
+                style={styles.childButton}
+                resizeMode="contain"
+              />
+            </PressableBounce>
           </Animated.View>
         </Animated.View>
       </View>

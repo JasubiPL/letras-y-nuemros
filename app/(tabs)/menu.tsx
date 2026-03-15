@@ -14,7 +14,7 @@ export default function MenuScreen() {
   const childType = useChildThemeStore((state) => state.childType);
   const selectedChildType = childType ?? 'girl';
 
-  const bg = childType === 'girl'
+  const background = childType === 'girl'
     ? require('@assets/images/backgrounds/bg-menu-girl.webp')
     : require('@assets/images/backgrounds/bg-menu-boy.webp');
 
@@ -24,7 +24,7 @@ export default function MenuScreen() {
     };
   return (
     <ImageBackground
-      source={bg}
+      source={background}
       style={styles.background}
       resizeMode="cover"
     >
@@ -87,7 +87,10 @@ export default function MenuScreen() {
           }
           label="Config"
           color={colorButton[selectedChildType][2]}
-          onPress={() => { playTap(); }}
+          onPress={() => { 
+            playTap();
+            router.push('/(tabs)/settings');
+          }}
         />
         <CartoonButton
           iconAbsolute

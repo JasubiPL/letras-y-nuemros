@@ -1,10 +1,10 @@
 import { CARTOON_BUTTON_THEMES } from "@constants/Colors";
+import { THEME } from "@constants/theme";
 import React, { useCallback } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withSequence,
   withSpring,
   withTiming,
 } from "react-native-reanimated";
@@ -42,12 +42,9 @@ export function CartoonButton({
 
   const handlePressOut = useCallback(() => {
     if (disabled) return;
-    scale.value = withSequence(
-      withSpring(1.05, { damping: 5, stiffness: 350 }),
-      withSpring(1, { damping: 8 })
-    );
-    translateY.value = withSpring(0, { damping: 8 });
-    shadowHeight.value = withSpring(7, { damping: 8 });
+    scale.value = withSpring(1, { damping: 20, stiffness: 300 });
+    translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
+    shadowHeight.value = withSpring(7, { damping: 20, stiffness: 300 });
     onPress?.();
   }, [disabled, onPress]);
 
@@ -60,7 +57,7 @@ export function CartoonButton({
   }));
 
   return (
-    <View style={[{ width, opacity: disabled ? 0.5 : 1 }, style]}>
+    <View style={[{ width, opacity: disabled ? 0.5 : 1, paddingBottom: 7 }, style]}>
       <AnimatedPressable
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
@@ -125,7 +122,7 @@ export function CartoonButton({
             ]}
           >
             {typeof icon === "string" ? (
-              <Text style={{ fontSize: height * 0.4, lineHeight: height * 0.5 }}>
+              <Text style={{ fontSize: height * 0.4, lineHeight: height * 0.5, fontFamily: THEME.typography.body.fontFamily }}>
                 {icon}
               </Text>
             ) : (
@@ -137,13 +134,13 @@ export function CartoonButton({
         <Text
           style={{
             fontSize: height * 0.32,
-            fontWeight: "900",
             color: theme.text,
             letterSpacing: 1.5,
             textTransform: "uppercase",
             textShadowColor: theme.border,
             textShadowOffset: { width: 1.5, height: 1.5 },
             textShadowRadius: 0,
+            fontFamily: THEME.fonts.bodyBold,
           }}
         >
           {label}
@@ -154,14 +151,15 @@ export function CartoonButton({
       <Animated.View
         style={[
           {
-            width: width - 8,
+            position: "absolute",
+            bottom: 0,
             alignSelf: "center",
+            width: width - 8,
             borderRadius: RADIUS,
             backgroundColor: theme.shadow,
             borderWidth: BORDER_W,
             borderColor: theme.border,
             borderTopWidth: 0,
-            marginTop: -BORDER_W,
             zIndex: -1,
           },
           shadowAnim,

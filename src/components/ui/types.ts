@@ -84,3 +84,29 @@ export type ButtonRectangleGlossProps = {
   height?: number;
   size?: ButtonRectangleGlossSize;
 };
+
+export type OutlinedProps = {
+  text?: string;
+  textStyle?: StyleProp<TextStyle>;
+  svgRenderer?: (color: string) => ReactNode;
+  color?: string;
+  outlineColor?: string;
+  outlineSize?: number;
+  containerStyle?: StyleProp<ViewStyle>;
+};
+
+export type PlayStopSwitchColors = {
+  trackActive: string;
+  trackInactive: string;
+  thumb: string;
+  thumbBorder: string;
+  trackBorder: string;
+  icon: string;
+};
+
+export type PlayStopSwitchProps = {
+  isPlaying: boolean;
+  onToggle: () => void;
+  colors?: Partial<PlayStopSwitchColors>;
+  size?: number;
+};

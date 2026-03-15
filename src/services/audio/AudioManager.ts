@@ -21,6 +21,8 @@ class AudioManager {
   private sounds: Map<string, PlayerLike> = new Map();
   private bgMusic: PlayerLike | null = null;
   private audioModule: ExpoAudioModuleLike | null = null;
+  private musicEnabled = true;
+  private soundEnabled = true;
 
   static getInstance(): AudioManager {
     if (!AudioManager.instance) {
@@ -66,7 +68,30 @@ class AudioManager {
     });
   }
 
+  async setMusicEnabled(enabled: boolean): Promise<void> {
+    this.musicEnabled = enabled;
+    if (!this.bgMusic) return;
+    if (enabled) {
+      if (this.bgMusic.play) await this.bgMusic.play();
+    } else {
+      if (this.bgMusic.pause) await this.bgMusic.pause();
+    }
+  }
+
+  setSoundEnabled(enabled: boolean): void {
+    this.soundEnabled = enabled;
+  }
+
+  isMusicEnabled(): boolean {
+    return this.musicEnabled;
+  }
+
+  isSoundEnabled(): boolean {
+    return this.soundEnabled;
+  }
+
   async playSound(key: string): Promise<void> {
+    if (!this.soundEnabled) return;
     const player = this.sounds.get(key);
     if (player) {
       if (player.seekTo) {

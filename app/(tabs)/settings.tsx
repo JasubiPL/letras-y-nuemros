@@ -1,7 +1,7 @@
-import { MusicIcon } from '@components/ui/icons/Music';
-import { SoundIcon } from '@components/ui/icons/SoundIcon';
-import { OutlinedText } from '@components/ui/OutlinedText';
-import { PlayStopSwitch } from '@components/ui/PlayStopSwitch';
+import { MusicIcon } from '@shared/ui/icons/Music';
+import { SoundIcon } from '@shared/ui/icons/SoundIcon';
+import { OutlinedText } from '@shared/ui/OutlinedText';
+import { PlayStopSwitch } from '@shared/ui/PlayStopSwitch';
 import { CARTOON_BUTTON_THEMES } from '@constants/Colors';
 import { THEME } from '@constants/theme';
 import { useSound } from '@hooks/useSound';
@@ -9,7 +9,7 @@ import AudioManager from '@services/audio/AudioManager';
 import { useChildThemeStore } from '@stores/useChildThemeStore';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { PressableBounce } from '@components/ui/PressableBounce';
+import { PressableBounce } from '@shared/ui/PressableBounce';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 const audio = AudioManager.getInstance();

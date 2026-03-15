@@ -24,50 +24,58 @@ React Native + Expo SDK 55 | TypeScript | Zustand | Reanimated 4
 
 ```
 numeros-y-letras/
-├── app/                            # Expo Router
+├── app/                            # Expo Router (thin wrappers)
 │   ├── _layout.tsx                 # Root layout (fonts, theme, splash)
 │   ├── +html.tsx                   # Web HTML config
 │   ├── +not-found.tsx              # 404
 │   ├── (tabs)/                     # Grupo de rutas (sin tab bar)
 │   │   ├── _layout.tsx             # Stack layout, sin tabs
-│   │   └── index.tsx               # Home — elegir Letras o Números
+│   │   ├── index.tsx               # Home — elegir niño o niña
+│   │   ├── menu.tsx                # Menú principal — Letras, Números, Config, Donar
+│   │   └── settings.tsx            # Pantalla de ajustes
 │   └── activity/                   # Activity screens (fullscreen modal)
 │       ├── [activityId].tsx        # Pantalla de actividad dinámica
 │       └── complete.tsx            # Celebración post-actividad
 │
 ├── src/
-│   ├── components/                 # Componentes reutilizables
-│   │   ├── ui/                     # UI genérica (botones, cards, progress bars)
-│   │   ├── animations/             # Efectos (confetti, transiciones)
-│   │   ├── activities/             # Componentes de actividad (opciones, drag, etc.)
-│   │   ├── Themed.tsx              # Text/View con soporte light/dark
-│   │   ├── useColorScheme.ts       # Hook color scheme (nativo)
-│   │   ├── useColorScheme.web.ts   # Hook color scheme (web)
-│   │   ├── useClientOnlyValue.ts   # Client-only value (nativo)
-│   │   └── useClientOnlyValue.web.ts
+│   ├── shared/                     # Componentes y utilidades reutilizables
+│   │   ├── ui/                     # UI genérica (CartoonButton, PressableBounce, etc.)
+│   │   │   ├── icons/              # Iconos SVG (BackArrow, Music, Sound)
+│   │   │   ├── Themed.tsx          # Text/View con soporte light/dark
+│   │   │   ├── useColorScheme.ts   # Hook color scheme (nativo)
+│   │   │   └── useColorScheme.web.ts
+│   │   ├── animations/             # Efectos compartidos (confetti, transiciones)
+│   │   └── components/             # Componentes de juego compartidos (MultipleChoice, DragAndDrop)
 │   │
-│   ├── hooks/
-│   │   ├── useSound.ts             # Reproducir sonidos via AudioManager
-│   │   ├── useAnimation.ts         # useBounce(), useShake()
-│   │   └── useHaptics.ts           # Feedback táctil
+│   ├── features/                   # Módulos por funcionalidad
+│   │   ├── letters/                # Módulo de Lectoescritura
+│   │   │   ├── screens/            # Menú de juegos de letras
+│   │   │   ├── components/         # Componentes específicos de letras
+│   │   │   └── data/               # Currículo y generadores de letras
+│   │   │
+│   │   ├── numbers/                # Módulo de Matemáticas
+│   │   │   ├── screens/            # Menú de juegos de números
+│   │   │   ├── components/         # Componentes específicos de números
+│   │   │   └── data/               # Currículo y generadores de números
+│   │   │
+│   │   └── settings/               # Módulo de Configuración
+│   │       └── screens/
+│   │
+│   ├── hooks/                      # Hooks transversales
+│   │   └── useSound.ts             # Reproducir sonidos via AudioManager
 │   │
 │   ├── stores/                     # Zustand stores
-│   │   ├── useProgressStore.ts     # Progreso por materia (persistido)
-│   │   ├── useSettingsStore.ts     # Config usuario (persistido)
-│   │   └── useActivityStore.ts     # Estado de actividad en curso
+│   │   └── useChildThemeStore.ts   # Tipo de niño seleccionado
 │   │
 │   ├── services/
-│   │   ├── audio/
-│   │   │   ├── AudioManager.ts     # Singleton precarga/reproduce sonidos
-│   │   │   └── sounds.ts           # Catálogo de sonidos
-│   │   ├── storage/
-│   │   └── activities/
+│   │   └── audio/
+│   │       ├── AudioManager.ts     # Singleton precarga/reproduce sonidos
+│   │       └── sounds.ts           # Catálogo de sonidos
 │   │
 │   ├── constants/
 │   │   ├── Colors.ts               # Colores light/dark (usa THEME)
 │   │   ├── theme.ts                # Tema infantil completo
-│   │   ├── animations.ts           # Spring configs, duraciones
-│   │   └── curriculum.ts           # Orden de letras/números, generadores de actividades
+│   │   └── animations.ts           # Spring configs, duraciones
 │   │
 │   ├── types/
 │   │   ├── activity.ts             # Subject, ActivityType, Activity, data types
@@ -76,8 +84,9 @@ numeros-y-letras/
 │   └── utils/
 │
 ├── assets/
-│   ├── fonts/SpaceMono-Regular.ttf
-│   └── images/
+│   ├── fonts/
+│   ├── images/
+│   └── music/
 │
 ├── CLAUDE.md
 ├── app.json
@@ -133,7 +142,8 @@ Feedback verbal: "¡Muy bien!" / "Inténtalo de nuevo".
 ## Path Aliases (tsconfig.json)
 
 ```
-@components/*  → src/components/*
+@shared/*      → src/shared/*
+@features/*    → src/features/*
 @hooks/*       → src/hooks/*
 @stores/*      → src/stores/*
 @services/*    → src/services/*

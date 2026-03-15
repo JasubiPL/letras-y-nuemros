@@ -1,5 +1,5 @@
 import Colors from '@constants/Colors';
-import { useColorScheme } from '@components/useColorScheme';
+import { useColorScheme } from '@shared/ui/useColorScheme';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { Offset, OutlinedRainbowTextProps, SegmentMode } from './types';

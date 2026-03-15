@@ -1,7 +1,7 @@
-import { CartoonButton } from '@components/ui/CartoonButton';
-import { BackArrowIcon } from '@components/ui/icons/BackArrowIcon';
-import { OutlinedRainbowText } from '@components/ui/OutlinedRainbowText';
-import type { CartoonColor } from '@components/ui/types';
+import { CartoonButton } from '@shared/ui/CartoonButton';
+import { BackArrowIcon } from '@shared/ui/icons/BackArrowIcon';
+import { OutlinedRainbowText } from '@shared/ui/OutlinedRainbowText';
+import type { CartoonColor } from '@shared/ui/types';
 import { THEME } from '@constants/theme';
 import { useSound } from '@hooks/useSound';
 import { useChildThemeStore } from '@stores/useChildThemeStore';

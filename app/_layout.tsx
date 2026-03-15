@@ -17,7 +17,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@components/useColorScheme';
+import { useColorScheme } from '@shared/ui/useColorScheme';
 import AudioManager from '@services/audio/AudioManager';
 import { SOUND_MAP } from '@services/audio/sounds';
 

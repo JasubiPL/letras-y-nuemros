@@ -51,7 +51,7 @@ export default function HomeScreen() {
               }}
             >
               <Image
-                source={require('@assets/images/girl-child-button.webp')}
+                source={require('@assets/images/items/girl-child-button.webp')}
                 accessibilityLabel="Soy Niña"
                 style={styles.childButton}
                 resizeMode="contain"
@@ -68,7 +68,7 @@ export default function HomeScreen() {
               }}
             >
               <Image
-                source={require('@assets/images/boy-child-button.webp')}
+                source={require('@assets/images/items/boy-child-button.webp')}
                 accessibilityLabel="Soy Niño"
                 style={styles.childButton}
                 resizeMode="contain"

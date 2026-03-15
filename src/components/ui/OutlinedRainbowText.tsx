@@ -1,23 +1,8 @@
 import Colors from '@constants/Colors';
 import { useColorScheme } from '@components/useColorScheme';
 import { useState } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-
-type SegmentMode = 'auto' | 'words' | 'letters';
-
-type OutlinedRainbowTextProps = {
-  text: string;
-  textStyle?: StyleProp<TextStyle>;
-  containerStyle?: StyleProp<ViewStyle>;
-  palette?: readonly string[];
-  segmentMode?: SegmentMode;
-  outerOutlineColor?: string;
-  innerOutlineColor?: string;
-  outerOutlineSize?: number;
-  innerOutlineSize?: number;
-};
-
-type Offset = { x: number; y: number };
+import { StyleSheet, Text, View } from 'react-native';
+import type { Offset, OutlinedRainbowTextProps, SegmentMode } from './types';
 
 const buildOutlineOffsets = (size: number): Offset[] => {
   const roundedSize = Math.max(1, Math.round(size));
@@ -70,11 +55,23 @@ const shufflePalette = (palette: readonly string[], seed: number) => {
   return result;
 };
 
+const ACCENT_PALETTE = [
+  '#FF4D6D',
+  '#FF9F1C',
+  '#FFD60A',
+  '#48D597',
+  '#3C9DFF',
+  '#9A6CFF',
+  '#FF5C8A',
+] as const;
+
 export function OutlinedRainbowText({
   text,
   textStyle,
   containerStyle,
   palette,
+  accent = false,
+  acent = false,
   segmentMode = 'auto',
   outerOutlineColor = '#FFFFFF',
   innerOutlineColor = '#000000',
@@ -83,7 +80,8 @@ export function OutlinedRainbowText({
 }: OutlinedRainbowTextProps) {
   const colorScheme = useColorScheme();
   const themeColors = Colors[colorScheme ?? 'light'];
-  const activePalette = palette ?? themeColors.wordPalette;
+  const useAccentPalette = accent || acent;
+  const activePalette = palette ?? (useAccentPalette ? ACCENT_PALETTE : themeColors.wordPalette);
   const [paletteSeed] = useState(() => Math.floor(Math.random() * 1_000_000_000));
   const mixedPalette = activePalette.length > 0 ? shufflePalette(activePalette, paletteSeed) : ['#FFFFFF'];
   const segments = getSegments(text, segmentMode);

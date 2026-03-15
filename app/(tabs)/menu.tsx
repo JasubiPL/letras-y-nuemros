@@ -1,9 +1,9 @@
+import { THEME } from '@constants/theme';
+import { useSound } from '@hooks/useSound';
 import { CartoonButton } from '@shared/ui/CartoonButton';
 import { BackArrowIcon } from '@shared/ui/icons/BackArrowIcon';
 import { OutlinedRainbowText } from '@shared/ui/OutlinedRainbowText';
 import type { CartoonColor } from '@shared/ui/types';
-import { THEME } from '@constants/theme';
-import { useSound } from '@hooks/useSound';
 import { useChildThemeStore } from '@stores/useChildThemeStore';
 import { useRouter } from 'expo-router';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
@@ -37,7 +37,7 @@ export default function MenuScreen() {
           height={48}
           onPress={() => {
             playTap();
-            router.push('/');
+            router.back();
           }}
         />
       </View>
@@ -59,7 +59,10 @@ export default function MenuScreen() {
           }
           label="Letras"
           color={colorButton[selectedChildType][0]}
-          onPress={() => { playTap(); }}
+          onPress={() => { 
+            playTap();
+            router.push('/(tabs)/lettersScreens/lettersMenu');
+          }}
         />
         <CartoonButton
           iconAbsolute

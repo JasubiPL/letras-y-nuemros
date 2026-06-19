@@ -1,5 +1,5 @@
 import { THEME } from './theme';
-import type { CartoonButtonTheme, CartoonColor } from '@components/ui/types';
+import type { CartoonButtonTheme, CartoonColor } from '@shared/ui/types';
 
 export const CARTOON_BUTTON_THEMES: Record<CartoonColor, CartoonButtonTheme> = {
   pink: {

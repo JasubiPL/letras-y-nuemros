@@ -5,9 +5,9 @@ import Animated, {
   FadeInUp,
 } from 'react-native-reanimated';
 
-import { View } from '@components/Themed';
-import { OutlinedRainbowText } from '@components/ui/OutlinedRainbowText';
-import { PressableBounce } from '@components/ui/PressableBounce';
+import { View } from '@shared/ui/Themed';
+import { OutlinedRainbowText } from '@shared/ui/OutlinedRainbowText';
+import { PressableBounce } from '@shared/ui/PressableBounce';
 import { useSound } from '@hooks/useSound';
 import { useChildThemeStore } from '@stores/useChildThemeStore';
 import { useRouter } from 'expo-router';

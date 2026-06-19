@@ -7,11 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "numerosyletras",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/logo-splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.numerosyletras"
@@ -39,7 +34,17 @@
       "expo-router",
       "expo-font",
       "expo-asset",
-      "expo-audio"
+      "expo-audio",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/logo-splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#000000"
+        }
+      ],
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

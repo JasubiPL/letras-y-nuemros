@@ -4,6 +4,7 @@ import { useHaptics } from '@hooks/useHaptics';
 import { useSound } from '@hooks/useSound';
 import { useSpeech } from '@hooks/useSpeech';
 import { MultipleChoice } from '@shared/components/MultipleChoice';
+import { CartoonButton } from '@shared/ui/CartoonButton';
 import { BackArrowIcon } from '@shared/ui/icons/BackArrowIcon';
 import { PressableBounce } from '@shared/ui/PressableBounce';
 import { goToComplete } from '@utils/nav';
@@ -24,6 +25,7 @@ interface ActivityRunnerProps {
 }
 
 const ADVANCE_DELAY_MS = 1100;
+const LIVES_PER_LEVEL = 3;
 
 export function ActivityRunner({ subject, level, activities }: ActivityRunnerProps) {
   const { playCorrect, playWrong } = useSound();
@@ -31,6 +33,9 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
   const { success, warning } = useHaptics();
 
   const [index, setIndex] = useState(0);
+  const [lives, setLives] = useState(LIVES_PER_LEVEL);
+  const [failed, setFailed] = useState(false);
+  const [round, setRound] = useState(0); // fuerza remontar al reiniciar el nivel
   const correctRef = useRef(0);
   const missedRef = useRef(false);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -47,7 +52,7 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
       const t = setTimeout(() => speak(letter), 1300);
       return () => clearTimeout(t);
     }
-  }, [index, current, speak]);
+  }, [index, round, current, speak]);
 
   useEffect(
     () => () => {
@@ -88,8 +93,25 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
       missedRef.current = true;
       warning();
       playWrong();
-      speak('Inténtalo de nuevo');
+      const remaining = lives - 1;
+      setLives(remaining);
+      if (remaining <= 0) {
+        setFailed(true);
+        speak('¡Casi! Vamos a intentarlo otra vez');
+      } else {
+        speak('Inténtalo de nuevo');
+      }
     }
+  };
+
+  const restart = () => {
+    if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    correctRef.current = 0;
+    missedRef.current = false;
+    setLives(LIVES_PER_LEVEL);
+    setFailed(false);
+    setIndex(0);
+    setRound((r) => r + 1);
   };
 
   return (
@@ -112,13 +134,26 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
             ))}
           </View>
         )}
+        {current && (
+          <View style={styles.lives}>
+            {Array.from({ length: LIVES_PER_LEVEL }).map((_, i) => (
+              <Text key={i} style={styles.heart}>
+                {i < lives ? '❤️' : '🤍'}
+              </Text>
+            ))}
+          </View>
+        )}
       </View>
 
       {current ? (
-        <Animated.View key={current.id} entering={FadeIn.duration(300)} style={styles.stage}>
+        <Animated.View
+          key={`${current.id}-${round}`}
+          entering={FadeIn.duration(300)}
+          style={styles.stage}
+        >
           <Text style={styles.prompt}>{current.prompt}</Text>
           <MultipleChoice
-            key={current.id}
+            key={`${current.id}-${round}`}
             options={options}
             correct={correct}
             onAttempt={handleAttempt}
@@ -127,6 +162,23 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
       ) : (
         <View style={styles.stage}>
           <Text style={styles.prompt}>Pronto habrá más actividades aquí 🐣</Text>
+        </View>
+      )}
+
+      {failed && (
+        <View style={styles.overlay}>
+          <View style={styles.failCard}>
+            <Text style={styles.failTitle}>¡Casi!</Text>
+            <Text style={styles.failMsg}>
+              Se acabaron los intentos.{'\n'}¿Lo intentamos otra vez?
+            </Text>
+            <CartoonButton
+              label="Volver a intentar"
+              color="greenAccent"
+              onPress={restart}
+            />
+            <CartoonButton label="Salir" color="silver" onPress={() => router.back()} />
+          </View>
         </View>
       )}
     </View>
@@ -175,5 +227,43 @@ const styles = StyleSheet.create({
     fontFamily: THEME.fonts.titleExtraBold,
     color: THEME.colors.text.primary,
     paddingHorizontal: 12,
+  },
+  lives: {
+    flexDirection: 'row',
+    gap: 2,
+  },
+  heart: {
+    fontSize: 18,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  failCard: {
+    backgroundColor: THEME.colors.surface,
+    borderRadius: 24,
+    padding: 24,
+    alignItems: 'center',
+    gap: 16,
+    width: '100%',
+    maxWidth: 360,
+  },
+  failTitle: {
+    fontSize: 36,
+    fontFamily: THEME.fonts.titleExtraBold,
+    color: THEME.colors.primary,
+  },
+  failMsg: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontFamily: THEME.fonts.bodyBold,
+    color: THEME.colors.text.secondary,
   },
 });

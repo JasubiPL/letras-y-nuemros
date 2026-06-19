@@ -36,7 +36,7 @@
 - [x] **Verificado (estático)**: `tsc --noEmit` limpio; `expo export` (ios) empaqueta sin errores.
 - [ ] **Verificar en dispositivo** (tu turno): jugar N1 completo, fallar a propósito, completar, ver estrellas y que el nivel quede registrado tras reiniciar la app.
 
-**Nota de diseño**: completar un nivel **siempre** desbloquea el siguiente (reintentar nunca penaliza el avance); las estrellas reflejan aciertos a la primera (3=100%, 2=≥60%, 1=resto). Niveles 4-10 se muestran como "Pronto" hasta tener su currículo (Fase 2).
+**Nota de diseño**: cada nivel da **3 vidas (corazones)**; cada respuesta incorrecta resta una. Al perder las 3 aparece un menú "Volver a intentar" que reinicia el nivel desde cero. Completar un nivel desbloquea el siguiente; las estrellas reflejan aciertos a la primera (3=100%, 2=≥60%, 1=resto). Niveles 4-10 se muestran como "Pronto" hasta tener su currículo (Fase 2).
 
 **Entregable**: bucle de aprendizaje completo y real para los 3 primeros niveles de Letras.
 

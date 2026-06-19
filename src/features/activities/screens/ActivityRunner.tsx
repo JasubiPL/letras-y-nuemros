@@ -7,6 +7,8 @@ import { MultipleChoice } from '@shared/components/MultipleChoice';
 import { CartoonButton } from '@shared/ui/CartoonButton';
 import { BackArrowIcon } from '@shared/ui/icons/BackArrowIcon';
 import { PressableBounce } from '@shared/ui/PressableBounce';
+import { useProfilesStore } from '@stores/useProfilesStore';
+import { useProgressStore } from '@stores/useProgressStore';
 import { goToComplete } from '@utils/nav';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -29,8 +31,10 @@ const LIVES_PER_LEVEL = 3;
 
 export function ActivityRunner({ subject, level, activities }: ActivityRunnerProps) {
   const { playCorrect, playWrong } = useSound();
-  const { speak } = useSpeech();
+  const { speak, stop } = useSpeech();
   const { success, warning } = useHaptics();
+  const profileId = useProfilesStore((state) => state.activeProfileId);
+  const recordActivity = useProgressStore((state) => state.recordActivity);
 
   const [index, setIndex] = useState(0);
   const [lives, setLives] = useState(LIVES_PER_LEVEL);
@@ -39,6 +43,7 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
   const correctRef = useRef(0);
   const missedRef = useRef(false);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const phonicsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const current = activities[index];
 
@@ -49,16 +54,20 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
     speak(current.prompt);
     if (current.payload.kind === 'phonics') {
       const letter = current.payload.letter;
-      const t = setTimeout(() => speak(letter), 1300);
-      return () => clearTimeout(t);
+      phonicsTimer.current = setTimeout(() => speak(letter), 1300);
+      return () => {
+        if (phonicsTimer.current) clearTimeout(phonicsTimer.current);
+      };
     }
   }, [index, round, current, speak]);
 
   useEffect(
     () => () => {
       if (advanceTimer.current) clearTimeout(advanceTimer.current);
+      if (phonicsTimer.current) clearTimeout(phonicsTimer.current);
+      stop();
     },
-    []
+    [stop]
   );
 
   const payload = current?.payload;
@@ -92,8 +101,16 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
   };
 
   const handleAttempt = (isCorrect: boolean) => {
+    if (phonicsTimer.current) {
+      clearTimeout(phonicsTimer.current);
+      phonicsTimer.current = null;
+    }
+
     if (isCorrect) {
       if (!missedRef.current) correctRef.current += 1;
+      if (profileId && current) {
+        recordActivity(profileId, subject, current.id);
+      }
       success();
       playCorrect();
       speak('¡Muy bien!');
@@ -115,6 +132,7 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
 
   const restart = () => {
     if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    if (phonicsTimer.current) clearTimeout(phonicsTimer.current);
     correctRef.current = 0;
     missedRef.current = false;
     setLives(LIVES_PER_LEVEL);

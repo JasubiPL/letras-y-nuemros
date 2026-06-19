@@ -16,6 +16,7 @@ export default function ProfileSelectScreen() {
   const router = useRouter();
   const { playTap } = useSound();
   const profiles = useProfilesStore((s) => s.profiles);
+  const hasHydrated = useProfilesStore((s) => s.hasHydrated);
   const setActiveProfile = useProfilesStore((s) => s.setActiveProfile);
   const setChildType = useChildThemeStore((s) => s.setChildType);
 
@@ -42,7 +43,9 @@ export default function ProfileSelectScreen() {
           />
         </Animated.View>
 
-        {hasProfiles ? (
+        {!hasHydrated ? (
+          <View style={styles.emptyWrap} />
+        ) : hasProfiles ? (
           <ScrollView contentContainerStyle={styles.grid}>
             {profiles.map((p, i) => (
               <Animated.View key={p.id} entering={FadeInDown.duration(400).delay(i * 80)}>

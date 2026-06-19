@@ -3,6 +3,10 @@
 > App educativa infantil para enseñar a leer y a hacer matemáticas básicas en español.
 > Documento maestro del producto y la arquitectura. Versión 1.0 — 2026-06-19.
 
+> **Estado de entrega:** la v1 familiar está implementada y empaquetable: Letras N1-3,
+> Números N1-10, perfiles y progreso local. La sección 3 conserva la línea base
+> histórica previa al desarrollo; el estado ejecutado vive en [`ROADMAP.md`](ROADMAP.md).
+
 ---
 
 ## 1. Visión

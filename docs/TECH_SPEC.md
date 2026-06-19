@@ -84,8 +84,8 @@ ejercicios sin escribir pantallas nuevas.
 Currículo (data) → genera → Activity[] → ActivityRunner → GameMechanic (por tipo) → Resultado → Progreso + Celebración
 ```
 
-### 4.3 Stack tecnológico (sin cambios respecto a package.json actual)
-Expo SDK 55 · RN 0.83 · React 19 · Expo Router · Zustand 5 · Reanimated 4 · `expo-audio` · `expo-speech` · `expo-haptics` · `lottie-react-native` · `react-native-gesture-handler` · `react-native-svg`.
+### 4.3 Stack tecnológico
+Expo SDK 56 · RN 0.85 · React 19 · Expo Router · Zustand 5 · Reanimated 4 · `expo-audio` · `expo-speech` · `expo-haptics` · `lottie-react-native` · `react-native-gesture-handler` · `react-native-svg`.
 
 > Nota: el `CLAUDE.md` menciona `expo-av`; la realidad es **`expo-audio`** (correcto en SDK 55). Se actualizará el CLAUDE.md.
 

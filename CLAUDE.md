@@ -1,7 +1,7 @@
 # Números y Letras — App Educativa Infantil
 
 App para enseñar a niños a leer y hacer matemáticas básicas en español.
-React Native + Expo SDK 55 | TypeScript | Zustand | Reanimated 4
+React Native + Expo SDK 56 | TypeScript | Zustand | Reanimated 4
 
 > 📄 **Documentos de referencia** (leer antes de implementar):
 > - [`docs/TECH_SPEC.md`](docs/TECH_SPEC.md) — Especificación técnica completa (arquitectura, modelo de dominio, currículo de los 20 niveles, mecánicas).
@@ -15,7 +15,7 @@ React Native + Expo SDK 55 | TypeScript | Zustand | Reanimated 4
 
 | Categoría | Herramienta |
 |-----------|-------------|
-| Framework | Expo SDK 55, React Native 0.83 |
+| Framework | Expo SDK 56, React Native 0.85 |
 | Navegación | Expo Router (file-based) — Stack únicamente, **NUNCA usar Tabs** |
 | Estado | Zustand 5 + AsyncStorage (persistido) |
 | Animaciones | React Native Reanimated 4 + Lottie |

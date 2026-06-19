@@ -108,6 +108,7 @@ function RootLayoutNav() {
           name="activity/complete"
           options={{ headerShown: false, gestureEnabled: false }}
         />
+        <Stack.Screen name="profile/setup" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

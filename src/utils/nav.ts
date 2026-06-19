@@ -14,6 +14,15 @@ export function goToNumbersMenu(): void {
   router.push('/(tabs)/numbersScreens/numbersMenu' as unknown as Href);
 }
 
+export function goToProfileSetup(): void {
+  router.push('/profile/setup' as unknown as Href);
+}
+
+export function goToProfileSelect(): void {
+  // Vuelve a la pantalla de inicio (selector de perfil).
+  router.replace('/' as unknown as Href);
+}
+
 export function goToPlay(subject: Subject, level: number): void {
   router.push({
     pathname: '/activity/play',

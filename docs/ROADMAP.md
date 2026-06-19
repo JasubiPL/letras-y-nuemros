@@ -71,17 +71,21 @@
 
 ---
 
-## Fase 4 — Perfiles y pulido
+## Fase 4 — Perfiles y pulido ✅ *(núcleo completo — pendiente prueba en dispositivo)*
 *Objetivo: experiencia redonda para varios hijos.*
 
-- [ ] **`ProfileSetupScreen`** — crear perfil (nombre + niño/niña + avatar de un set fijo).
-- [ ] **Selector de perfil** en `index` (si hay >0 perfiles, elegir; si no, crear).
-- [ ] **Ajuste de Voz (TTS)** en Settings + gestión de perfiles.
-- [ ] **Lottie** de celebración real en `CompleteScreen` (`assets/lottie/`).
-- [ ] **Pulido visual**: estrellas, candados, transiciones entre pantallas, animaciones de entrada.
-- [ ] **Verificar**: dos perfiles con progresos independientes que persisten.
+- [x] **`ProfileSetupScreen`** — crear perfil (nombre + niño/niña + avatar de un set fijo de emojis); ruta `app/profile/setup`.
+- [x] **Selector de perfil** en `index` (`ProfileSelectScreen`): si hay perfiles, elegir (avatar + nombre) o "Nuevo"; si no, crear el primero. Al elegir/crear se fija el perfil activo y el `childType` (tema).
+- [x] **Ajuste de Voz (TTS)** en Settings + botón **"Cambiar de perfil"**.
+- [x] **`ProfileAvatar`** + set de avatares (`src/features/profiles/data/avatars.ts`).
+- [x] **Verificado (estático)**: `tsc` limpio; `expo export` (ios) empaqueta sin errores.
+- [ ] **Lottie** de celebración real en `CompleteScreen` — diferido (requiere asset; hoy hay animación de estrellas).
+- [ ] **Pulido visual** adicional (transiciones, candados con arte) — incremental.
+- [ ] **Verificar en dispositivo** (tu turno): crear dos perfiles, jugar con cada uno y confirmar que los progresos son independientes y persisten.
 
-**Entregable**: app lista para el uso diario de los niños.
+**Nota**: cada hijo tiene su progreso independiente — los stores ya lo soportan (progreso por `profileId`). Borrar perfiles y gestión avanzada quedan para más adelante si hacen falta.
+
+**Entregable**: app lista para el uso diario de los niños (varios perfiles).
 
 ---
 

@@ -3,6 +3,12 @@
 App para enseñar a niños a leer y hacer matemáticas básicas en español.
 React Native + Expo SDK 55 | TypeScript | Zustand | Reanimated 4
 
+> 📄 **Documentos de referencia** (leer antes de implementar):
+> - [`docs/TECH_SPEC.md`](docs/TECH_SPEC.md) — Especificación técnica completa (arquitectura, modelo de dominio, currículo de los 20 niveles, mecánicas).
+> - [`docs/ROADMAP.md`](docs/ROADMAP.md) — Plan de trabajo por fases con checklists.
+>
+> **Decisiones de producto cerradas**: uso personal (sideload, sin tiendas) · edades mixtas · perfiles por hijo con progreso persistido · 10 niveles de Letras + 10 de Números · sin monetización real.
+
 ---
 
 ## Stack Tecnológico
@@ -14,7 +20,7 @@ React Native + Expo SDK 55 | TypeScript | Zustand | Reanimated 4
 | Estado | Zustand 5 + AsyncStorage (persistido) |
 | Animaciones | React Native Reanimated 4 + Lottie |
 | Gestos | React Native Gesture Handler |
-| Audio | expo-av (AudioManager singleton) |
+| Audio | expo-audio (AudioManager singleton) |
 | TTS | expo-speech (instrucciones habladas en español) |
 | Haptics | expo-haptics (feedback táctil) |
 
@@ -65,7 +71,9 @@ numeros-y-letras/
 │   │   └── useSound.ts             # Reproducir sonidos via AudioManager
 │   │
 │   ├── stores/                     # Zustand stores
-│   │   └── useChildThemeStore.ts   # Tipo de niño seleccionado
+│   │   ├── useChildThemeStore.ts   # Tipo de niño seleccionado (tema visual)
+│   │   ├── useProfilesStore.ts     # [planificado] Perfiles por hijo (persistido)
+│   │   └── useProgressStore.ts     # [planificado] Progreso por perfil (persistido)
 │   │
 │   ├── services/
 │   │   └── audio/
@@ -115,6 +123,7 @@ numeros-y-letras/
 - `number_recognition` — Reconocer número entre opciones
 - `counting` — Contar objetos (emojis)
 - `ordering` — Ordenar secuencias numéricas
+- `comparison` — ¿Cuál tiene más / menos?
 - `basic_operations` — Suma/resta básica
 
 ### Progresión por Niveles (curriculum.ts)
@@ -126,12 +135,16 @@ numeros-y-letras/
 - Nivel 7-8: Consonantes menos frecuentes (F, G, H, J, V)
 - Nivel 9-10: Restantes (K, Ñ, Q, W, X, Y, Z)
 
-**Números** (NUMBER_ORDER):
-- Nivel 1-2: 1-5 (contar)
-- Nivel 3-4: 6-10 (contar)
-- Nivel 5-6: 11-15 (reconocer)
-- Nivel 7-8: 16-20 (reconocer)
-- Nivel 9-10: Operaciones básicas
+**Números** (NUMBER_ORDER) — foco 1-10:
+- Nivel 1-2: Contar (1-3, luego 1-5)
+- Nivel 3: Reconocer números 1-5
+- Nivel 4-5: Contar y reconocer 6-10
+- Nivel 6: Ordenar secuencias 1-10
+- Nivel 7: Comparar (más / menos)
+- Nivel 8-9: Sumar y restar hasta 10
+- Nivel 10: Mixto / repaso
+
+> Detalle completo de cada nivel en `docs/TECH_SPEC.md` §6.
 
 ### TTS (expo-speech)
 Todas las instrucciones se leen en voz alta en español (`es-ES`, rate: 0.8).
@@ -168,14 +181,14 @@ Feedback verbal: "¡Muy bien!" / "Inténtalo de nuevo".
 
 ---
 
-## Siguiente Paso (MVP)
+## Siguiente Paso
 
-- [ ] Agregar assets de audio (efectos: tap, correct, wrong, celebration)
-- [ ] Implementar componentes UI reutilizables (AnimatedButton, Card, ProgressBar)
-- [ ] Agregar actividades de fonética (letra → sonido con TTS)
-- [ ] Agregar actividades de contar con drag & drop
-- [ ] Agregar actividades de formar palabras (sílabas)
-- [ ] Agregar animaciones Lottie de celebración
-- [ ] Implementar avance automático de nivel
-- [ ] Testing en iOS y Android
-- [ ] Configurar EAS Build
+El plan de trabajo completo, por fases y con checklists, vive en **[`docs/ROADMAP.md`](docs/ROADMAP.md)**.
+
+Resumen de fases:
+- **Fase 0** — Fundaciones: tipos de dominio, stores de perfil/progreso, TTS, háptica, efectos de audio.
+- **Fase 1** — Primera vertical jugable: `MultipleChoice` + `ActivityRunner` + celebración + Letras N1-3. ⭐
+- **Fase 2** — Letras completas (sílabas, palabras, drag & drop).
+- **Fase 3** — Números completos (menú + 10 niveles).
+- **Fase 4** — Perfiles y pulido (selector, Lottie, estrellas, candados).
+- **Fase 5** — Empaquetado (pruebas iOS/Android, EAS Build interno).

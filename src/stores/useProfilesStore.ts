@@ -18,6 +18,8 @@ interface NewProfileInput {
 interface ProfilesState {
   profiles: ChildProfile[];
   activeProfileId: string | null;
+  hasHydrated: boolean;
+  setHasHydrated: (hasHydrated: boolean) => void;
   addProfile: (input: NewProfileInput) => ChildProfile;
   removeProfile: (id: string) => void;
   setActiveProfile: (id: string) => void;
@@ -29,6 +31,8 @@ export const useProfilesStore = create<ProfilesState>()(
     (set, get) => ({
       profiles: [],
       activeProfileId: null,
+      hasHydrated: false,
+      setHasHydrated: (hasHydrated) => set({ hasHydrated }),
 
       addProfile: (input) => {
         const profile: ChildProfile = {
@@ -70,6 +74,14 @@ export const useProfilesStore = create<ProfilesState>()(
         profiles: state.profiles,
         activeProfileId: state.activeProfileId,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setHasHydrated(true);
+        } else if (typeof window !== 'undefined') {
+          // No bloquea la entrada para siempre si el almacenamiento local falla.
+          useProfilesStore.setState({ hasHydrated: true });
+        }
+      },
     }
   )
 );

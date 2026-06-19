@@ -124,7 +124,7 @@ class AudioManager {
     player.loop = loop;
     player.volume = 0.05;
     this.bgMusic = player;
-    if (player.play) {
+    if (this.musicEnabled && player.play) {
       await player.play();
     }
   }

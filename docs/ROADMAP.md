@@ -23,17 +23,20 @@
 
 ---
 
-## Fase 1 — Primera vertical jugable ⭐ *(primer hito que los niños pueden tocar)*
+## Fase 1 — Primera vertical jugable ⭐ *(código completo — pendiente prueba en dispositivo)*
 *Objetivo: un juego completo de Letras de punta a punta — menú de niveles → jugar → celebrar → progreso guardado.*
 
-- [ ] **`MultipleChoice`** — `src/shared/components/MultipleChoice.tsx`: 2-4 `OptionCard` grandes; al tocar resuelve acierto/error.
-- [ ] **`OptionCard`** — tarjeta cartoon reutilizando `CartoonButton`/tema; estados normal/correcto/incorrecto con animación Reanimated.
-- [ ] **`ActivityRunner`** — `app/activity/[activityId].tsx` + `src/features/.../ActivityRunner.tsx`: recibe `subject`+`level`, recorre las actividades, lee el prompt por TTS, gestiona el bucle acierto/error (sonido+háptica+voz), al terminar navega a `complete`.
-- [ ] **`CompleteScreen`** — `app/activity/complete.tsx`: estrellas obtenidas + celebración (placeholder de confeti hasta tener Lottie) + botones "Otra vez" / "Volver".
-- [ ] **`LevelSelectScreen`** (genérico) + **`LevelCard`** — lista de niveles 1-10 con candado/estrellas; navega al runner.
-- [ ] **Currículo Letras N1-3** — `src/features/letters/data/curriculum.ts` + generador de actividades (`letter_recognition` y `phonics`) para vocales.
-- [ ] **Conectar** `lettersMenu` → `LevelSelectScreen` (letras) → `ActivityRunner` → `CompleteScreen`, persistiendo progreso.
-- [ ] **Verificar en dispositivo**: jugar N1 completo, fallar a propósito, completar, ver estrellas y que el nivel quede registrado tras reiniciar la app.
+- [x] **`MultipleChoice`** — `src/shared/components/MultipleChoice.tsx`: 2-4 `OptionCard` grandes; al tocar resuelve acierto/error y reporta cada intento.
+- [x] **`OptionCard`** — tarjeta cartoon con tema; estados normal/correcto (rebote + ✓) / incorrecto (sacudida + ✗) con Reanimated.
+- [x] **`ActivityRunner`** — `app/activity/play.tsx` + `src/features/activities/screens/ActivityRunner.tsx`: recibe `subject`+`level`, recorre las actividades, lee el prompt por TTS, gestiona acierto/error (sonido+háptica+voz), puntúa por aciertos a la primera y navega a `complete`.
+- [x] **`CompleteScreen`** — `app/activity/complete.tsx`: estrellas por precisión + celebración (animación de estrellas; Lottie llega en Fase 4) + "Otra vez" / "Volver"; guarda el nivel (desbloquea el siguiente).
+- [x] **`LevelSelectScreen`** (genérico) + **`LevelCard`** — niveles 1-10 con estados available / locked / "Pronto" y estrellas ganadas.
+- [x] **Currículo Letras N1-3** — `src/features/letters/data/curriculum.ts` + generador (`letter_recognition` y `phonics`); `registry.ts` mapea materia+nivel → actividades.
+- [x] **Conectar** menú de Letras → `LevelSelectScreen` → `ActivityRunner` → `CompleteScreen`, persistiendo progreso; rutas `activity/*` registradas en el Stack raíz.
+- [x] **Verificado (estático)**: `tsc --noEmit` limpio; `expo export` (ios) empaqueta sin errores.
+- [ ] **Verificar en dispositivo** (tu turno): jugar N1 completo, fallar a propósito, completar, ver estrellas y que el nivel quede registrado tras reiniciar la app.
+
+**Nota de diseño**: cada nivel da **3 vidas (corazones)**; cada respuesta incorrecta resta una. Al perder las 3 aparece un menú "Volver a intentar" que reinicia el nivel desde cero. Completar un nivel desbloquea el siguiente; las estrellas reflejan aciertos a la primera (3=100%, 2=≥60%, 1=resto). Niveles 4-10 se muestran como "Pronto" hasta tener su currículo (Fase 2).
 
 **Entregable**: bucle de aprendizaje completo y real para los 3 primeros niveles de Letras.
 
@@ -93,6 +96,25 @@
 
 ## Decisiones menores asumidas (cambiar aquí si hace falta)
 1. Botón "Donar" → oculto en build personal.
-2. Desbloqueo de nivel → ≥70% de aciertos; reintentar nunca penaliza.
+2. Desbloqueo de nivel → completar el nivel lo desbloquea; **3 vidas** por nivel (3 fallos → menú "Volver a intentar" que reinicia). Estrellas por aciertos a la primera.
 3. 8 ejercicios por nivel.
 4. Avatares → set fijo de imágenes (sin permisos de cámara).
+
+---
+
+## Alcance del MVP vs Evolutivo
+
+**MVP** = el motor actual con **niveles planos** por materia: Letras (Fases 1-2),
+Números (Fase 3), perfiles (Fase 4) y empaquetado (Fase 5). Es lo que terminamos primero.
+
+**Post-MVP (evolutivo)** = mejoras que se añaden en futuras actualizaciones, una vez
+cerrado el MVP:
+
+- **Rutas de aprendizaje en Letras** (agrupar niveles por tema: vocales, consonantes,
+  sílabas, escribir palabras, comprensión lectora). Diseño completo y decisiones
+  acordadas en **[`TECH_SPEC.md`](TECH_SPEC.md) §16**. Reorganizará los niveles planos
+  de Letras; por eso se hace después del MVP.
+- Idea relacionada para revisar al planificar la Fase 2: dado que las rutas
+  reorganizarán Letras, quizá convenga mantener Letras en el nivel actual durante el
+  MVP y priorizar Números + perfiles + empaquetado, en vez de construir Letras 4-10
+  planos que luego se reordenan. **A decidir con el owner.**

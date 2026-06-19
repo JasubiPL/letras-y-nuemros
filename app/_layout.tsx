@@ -103,6 +103,11 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="activity/play" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="activity/complete"
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
       </Stack>
     </ThemeProvider>
   );

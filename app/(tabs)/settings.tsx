@@ -10,7 +10,7 @@ import { useChildThemeStore } from '@stores/useChildThemeStore';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { PressableBounce } from '@shared/ui/PressableBounce';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 const audio = AudioManager.getInstance();
 
@@ -18,6 +18,7 @@ export default function SettingsScreen() {
   const { playTap } = useSound();
   const [musicOn, setMusicOn] = useState(() => audio.isMusicEnabled());
   const [soundOn, setSoundOn] = useState(() => audio.isSoundEnabled());
+  const year = new Date().getFullYear();
   const childType = useChildThemeStore((state) => state.childType);
   const background = childType === 'girl'
     ? require('@assets/images/backgrounds/bg-settings-girl.webp') 
@@ -68,6 +69,20 @@ export default function SettingsScreen() {
             <View style={styles.backHighlight} />
             <View style={styles.backShadow} />
           </PressableBounce>
+        </View>
+      </View>
+      <View style={styles.creditFooter} pointerEvents="none">
+        <View style={styles.creditPill}>
+          <Text style={styles.creditLabel}>Desarrollado por</Text>
+          <Image
+            source={require('@assets/images/logo-jasubip.png')}
+            style={styles.creditLogo}
+            resizeMode="contain"
+            accessibilityLabel="Jasubip"
+          />
+          <Text style={styles.creditLegend}>
+            © {year} Jasubip · Todos los derechos reservados
+          </Text>
         </View>
       </View>
     </ImageBackground>
@@ -184,5 +199,34 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: 'rgba(0,0,0,0.1)',
   },
-
+  creditFooter: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  creditPill: {
+    alignItems: 'center',
+    gap: 2,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 16,
+    backgroundColor: 'rgba(0,0,0,0.32)',
+  },
+  creditLabel: {
+    color: 'rgba(255,255,255,0.85)',
+    fontSize: 12,
+    fontFamily: THEME.fonts.body,
+  },
+  creditLogo: {
+    width: 150,
+    height: 38,
+    marginVertical: 2,
+  },
+  creditLegend: {
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 10,
+    fontFamily: THEME.fonts.body,
+  },
 })

@@ -96,6 +96,25 @@
 
 ## Decisiones menores asumidas (cambiar aquí si hace falta)
 1. Botón "Donar" → oculto en build personal.
-2. Desbloqueo de nivel → ≥70% de aciertos; reintentar nunca penaliza.
+2. Desbloqueo de nivel → completar el nivel lo desbloquea; **3 vidas** por nivel (3 fallos → menú "Volver a intentar" que reinicia). Estrellas por aciertos a la primera.
 3. 8 ejercicios por nivel.
 4. Avatares → set fijo de imágenes (sin permisos de cámara).
+
+---
+
+## Alcance del MVP vs Evolutivo
+
+**MVP** = el motor actual con **niveles planos** por materia: Letras (Fases 1-2),
+Números (Fase 3), perfiles (Fase 4) y empaquetado (Fase 5). Es lo que terminamos primero.
+
+**Post-MVP (evolutivo)** = mejoras que se añaden en futuras actualizaciones, una vez
+cerrado el MVP:
+
+- **Rutas de aprendizaje en Letras** (agrupar niveles por tema: vocales, consonantes,
+  sílabas, escribir palabras, comprensión lectora). Diseño completo y decisiones
+  acordadas en **[`TECH_SPEC.md`](TECH_SPEC.md) §16**. Reorganizará los niveles planos
+  de Letras; por eso se hace después del MVP.
+- Idea relacionada para revisar al planificar la Fase 2: dado que las rutas
+  reorganizarán Letras, quizá convenga mantener Letras en el nivel actual durante el
+  MVP y priorizar Números + perfiles + empaquetado, en vez de construir Letras 4-10
+  planos que luego se reordenan. **A decidir con el owner.**

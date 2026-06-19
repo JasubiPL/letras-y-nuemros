@@ -336,3 +336,61 @@ Todo con `Stack` + `router.push()`. **Nunca `<Tabs>`.**
 - Estructura de archivo: Imports → Types → Component → Styles.
 - Navegación **solo Stack**.
 - Path aliases: `@shared @features @hooks @stores @services @constants @appTypes @utils @assets`.
+
+---
+
+## 16. Evolutivo (post-MVP): Rutas de aprendizaje
+
+> **Estado: planificado, NO implementado.** Decidido como mejora posterior al MVP.
+> El MVP es el motor actual con niveles planos (Letras, Números, perfiles,
+> empaquetado). Esta sección documenta el diseño acordado para futuras
+> iteraciones. Implementarlo **reorganizará** los niveles planos de Letras en
+> rutas; se asume algo de retrabajo a cambio de una estructura mucho mejor.
+
+### 16.1 Motivación
+Edades mixtas con necesidades distintas: un peque empieza por reconocer letras,
+mientras que un hijo de 8 años **ya conoce las letras pero le cuesta leer** y
+necesita práctica de sílabas, escritura de palabras y comprensión lectora.
+Una lista plana de 10 niveles no sirve a ambos; agrupar por **rutas temáticas**
+sí: cada quien entra por donde le toca.
+
+### 16.2 Concepto
+Nueva capa **Ruta (LearningTrack)** entre Materia y Niveles:
+
+```
+Letras (materia)
+ ├─ 🔤 Aprende las vocales       → niveles 1..N  (contenido actual del MVP)
+ ├─ 🔡 Aprende las consonantes   → niveles 1..N
+ ├─ 🔉 Sílabas y sonidos         → niveles 1..N
+ ├─ ✏️ Escribiendo palabras      → niveles 1..N
+ └─ 📖 De qué trata la historia  → niveles 1..N
+```
+
+El menú de Letras mostrará **tarjetas de ruta**; al entrar, el selector de
+niveles 1-10 actual (candados/estrellas), pero **el progreso se guarda por ruta**.
+
+### 16.3 Rutas acordadas
+
+| Ruta | Qué enseña | Mecánicas | Notas |
+|------|-----------|-----------|-------|
+| 🔤 Aprende las vocales | Reconocer/nombrar A E I O U | `letter_recognition`, `phonics` | El contenido actual (N1-3) migra aquí |
+| 🔡 Aprende las consonantes | Reconocer/nombrar consonantes | `letter_recognition`, `phonics` | Separada de vocales (decisión del owner) |
+| 🔉 Sílabas y sonidos | Juntar consonante+vocal (ma, pe, si…) | `syllables` | Puente hacia leer |
+| ✏️ Escribiendo palabras | Formar palabras con sílabas/letras | `word_building` (drag & drop) | Clave para el hijo de 8 |
+| 📖 De qué trata la historia | Leer frase/cuento corto y responder | `reading_comprehension` *(tipo nuevo)* | Claude redacta los textos; el owner los revisa |
+
+> Vocales y consonantes van **separadas** en rutas distintas (decisión confirmada).
+
+### 16.4 Orden de construcción (cuando se retome)
+1. **Estructura de rutas** + migrar el contenido existente a "Aprende las vocales".
+2. **"Escribiendo palabras"** (la de mayor valor para el hijo de 8).
+3. "Aprende las consonantes" y "Sílabas y sonidos".
+4. **"De qué trata la historia"** al final (requiere redactar los cuentos).
+
+### 16.5 Impacto técnico
+- **Modelo**: nuevo `LearningTrack { id, subject, title, subtitle, emoji, color, totalLevels }`.
+- **Tipo de actividad nuevo**: `reading_comprehension` con payload `{ kind:'reading'; text:string; question:string; options:string[]; answer:string }` (encaja en el `MultipleChoice` existente).
+- **Progreso por ruta**: refactor de `useProgressStore` — de `byProfile[id].{letters,numbers}` a progreso indexado por `trackId` (p. ej. `byProfile[id].tracks[trackId] = { currentLevel, stars, completed }`). Como solo lo usan los hijos del owner, no hay datos reales que migrar.
+- **Navegación**: Letras menú → **selector de rutas** (pantalla nueva) → selector de niveles → runner. El `registry.ts` pasa de `(subject, level)` a `(trackId, level)`.
+- **Contenido**: redactar sílabas/palabras por nivel y los textos de comprensión.
+- (Números podría adoptar rutas más adelante; fuera del alcance de esta nota.)

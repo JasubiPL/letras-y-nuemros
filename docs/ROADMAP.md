@@ -8,18 +8,18 @@
 
 ---
 
-## Fase 0 — Fundaciones
+## Fase 0 — Fundaciones ✅ *(completada)*
 *Objetivo: la base invisible sobre la que se monta todo. La app sigue corriendo igual, pero ya tiene cerebro.*
 
-- [ ] **Tipos de dominio** — `src/types/activity.ts` (`Subject`, `ActivityType`, `Activity`, payloads como unión discriminada) y `src/types/progress.ts` (`ChildProfile`, `SubjectProgress`, `UserProgress`).
-- [ ] **Store de progreso** — `src/stores/useProgressStore.ts` (Zustand + `persist` con AsyncStorage): `recordActivity`, `completeLevel`, `unlockNext`, `getLevelStars`.
-- [ ] **Store de perfiles** — `src/stores/useProfilesStore.ts` (persistido): CRUD de perfiles + perfil activo. Conecta `childType` del perfil activo con `useChildThemeStore`.
-- [ ] **TTS** — `src/services/speech/SpeechManager.ts` con `speak(text, { language:'es-ES', rate:0.8 })`, cola y respeto del toggle de voz.
-- [ ] **Háptica** — `src/hooks/useHaptics.ts` (`success` / `warning` / `light`), respeta ajuste.
-- [ ] **Audio** — añadir `correct/wrong/celebration` al `SOUND_MAP` (apuntando a archivos que llegarán); que `playSound` no falle si el archivo aún no existe.
-- [ ] **Verificar**: `npx tsc --noEmit` sin errores; la app arranca igual que antes.
+- [x] **Tipos de dominio** — `src/types/activity.ts` (`Subject`, `ActivityType`, `Activity`, payloads como unión discriminada por `kind`) y `src/types/progress.ts` (`ChildProfile`, `SubjectProgress`, `UserProgress`).
+- [x] **Store de progreso** — `src/stores/useProgressStore.ts` (Zustand + `persist` con AsyncStorage): `recordActivity`, `completeLevel`, `getLevelStars`, `isLevelUnlocked`.
+- [x] **Store de perfiles** — `src/stores/useProfilesStore.ts` (persistido): CRUD de perfiles + perfil activo. (Conexión `childType` → `useChildThemeStore` se cablea al construir el flujo de entrada en Fase 1/4.)
+- [x] **TTS** — `src/services/speech/SpeechManager.ts` + `src/hooks/useSpeech.ts`: `speak(text, { language:'es-ES', rate:0.85 })`, corta solapamientos, respeta toggle.
+- [x] **Háptica** — `src/hooks/useHaptics.ts` (`success` / `warning` / `light`), con `setHapticsEnabled` para Ajustes.
+- [x] **Audio** — `SOUND_MAP` documentado con placeholders de `correct/wrong/celebration` (sin romper Metro); el feedback cae a TTS + háptica mientras falten los .mp3.
+- [x] **Verificado**: `tsc --noEmit` sin errores; sin cambios de comportamiento (módulos aditivos).
 
-**Entregable**: tipos + estado persistente + voz/háptica listos para usarse. Sin cambios visibles aún.
+**Entregable**: tipos + estado persistente + voz/háptica listos para usarse. Sin cambios visibles aún. ✅
 
 ---
 

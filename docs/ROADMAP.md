@@ -55,16 +55,19 @@
 
 ---
 
-## Fase 3 — Números completos
+## Fase 3 — Números completos ✅ *(código completo — pendiente prueba en dispositivo)*
 *Objetivo: el módulo de Matemáticas, reutilizando las mecánicas ya hechas.*
 
-- [ ] **`NumbersMenuScreen`** — `src/features/numbers/screens/` + ruta `(tabs)/numbersScreens/numbersMenu` (fondos `bg-numbers-menu-*` ya existen).
-- [ ] **Conectar** el botón "Números" del menú principal (hoy es no-op).
-- [ ] **Mecánica `comparison`** (más/menos) si no se cubrió con `MultipleChoice`.
-- [ ] **Currículo Números N1-10** — `counting`, `number_recognition`, `ordering`, `comparison`, `basic_operations`; generadores.
-- [ ] **Verificar**: recorrer los 10 niveles de Números.
+- [x] **`NumberMenuScreen`** — `src/features/numbers/screens/` + ruta `(tabs)/numbersScreens/numbersMenu` (fondos `bg-numbers-menu-*`). Reusa el `LevelSelectScreen` genérico (ahora consciente de la materia para el fondo).
+- [x] **Conectar** el botón "Números" del menú principal (`goToNumbersMenu`).
+- [x] **`counting`** con estímulo visual (emojis) en el runner; el resto de tipos se modelan como `recognition` (elección de número), incluida la comparación más/menos.
+- [x] **Currículo Números N1-10** — `src/features/numbers/data/curriculum.ts`: contar, reconocer, ordenar (¿qué número sigue?), comparar, sumar/restar; `registry.ts` amplía a Números.
+- [x] **Verificado (estático)**: `tsc` limpio; `expo export` (ios) empaqueta sin errores.
+- [ ] **Verificar en dispositivo** (tu turno): recorrer los 10 niveles de Números.
 
-**Entregable**: app completa de contenido (20 niveles jugables).
+**Nota**: las mecánicas de arrastre (drag & drop) y secuencia quedan para el evolutivo; los 10 niveles de Números funcionan con `MultipleChoice` + estímulo de conteo.
+
+**Entregable**: app con contenido de Números completo (10 niveles jugables) además de Letras 1-3.
 
 ---
 

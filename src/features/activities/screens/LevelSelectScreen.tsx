@@ -32,10 +32,15 @@ export function LevelSelectScreen({ subject }: LevelSelectScreenProps) {
   const implemented = getImplementedLevels(subject);
   const levels = Array.from({ length: total }, (_, i) => i + 1);
 
+  const isGirl = childType === 'girl';
   const background =
-    childType === 'girl'
-      ? require('@assets/images/backgrounds/bg-letters-menu-girl.webp')
-      : require('@assets/images/backgrounds/bg-letters-menu-boy.webp');
+    subject === 'numbers'
+      ? isGirl
+        ? require('@assets/images/backgrounds/bg-numbers-menu-girl.webp')
+        : require('@assets/images/backgrounds/bg-numbers-menu-boy.webp')
+      : isGirl
+        ? require('@assets/images/backgrounds/bg-letters-menu-girl.webp')
+        : require('@assets/images/backgrounds/bg-letters-menu-boy.webp');
 
   const stateFor = (level: number): LevelState => {
     if (level > currentLevel) return 'locked';

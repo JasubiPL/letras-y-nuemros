@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/images/logo-splash-icon.png" width="180" alt="Logo de Números y Letras" />
+  <img src="assets/images/icon.png" width="180" alt="Logo de Números y Letras" />
 </p>
 
 # Números y Letras

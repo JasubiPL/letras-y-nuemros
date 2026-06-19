@@ -99,20 +99,6 @@ export default function MenuScreen() {
             router.push('/(tabs)/settings');
           }}
         />
-        <CartoonButton
-          iconAbsolute
-          iconContainerStyle={{ top: -40, left: -40 }}
-          icon={
-            <Image
-              source={require('@assets/images/items/donate.webp')}
-              style={{ width: 110, height: 110 }}
-              resizeMode="contain"
-            />
-          }
-          label="Donar"
-          color="diamond"
-          onPress={() => { playTap(); }}
-        />
       </View>
     </ImageBackground>
   );

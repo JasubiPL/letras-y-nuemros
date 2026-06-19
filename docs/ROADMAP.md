@@ -34,7 +34,7 @@
 - [x] **Currículo Letras N1-3** — `src/features/letters/data/curriculum.ts` + generador (`letter_recognition` y `phonics`); `registry.ts` mapea materia+nivel → actividades.
 - [x] **Conectar** menú de Letras → `LevelSelectScreen` → `ActivityRunner` → `CompleteScreen`, persistiendo progreso; rutas `activity/*` registradas en el Stack raíz.
 - [x] **Verificado (estático)**: `tsc --noEmit` limpio; `expo export` (ios) empaqueta sin errores.
-- [ ] **Verificar en dispositivo** (tu turno): jugar N1 completo, fallar a propósito, completar, ver estrellas y que el nivel quede registrado tras reiniciar la app.
+- [X] **Verificar en dispositivo** (tu turno): jugar N1 completo, fallar a propósito, completar, ver estrellas y que el nivel quede registrado tras reiniciar la app.
 
 **Nota de diseño**: cada nivel da **3 vidas (corazones)**; cada respuesta incorrecta resta una. Al perder las 3 aparece un menú "Volver a intentar" que reinicia el nivel desde cero. Completar un nivel desbloquea el siguiente; las estrellas reflejan aciertos a la primera (3=100%, 2=≥60%, 1=resto). Niveles 4-10 se muestran como "Pronto" hasta tener su currículo (Fase 2).
 
@@ -63,7 +63,7 @@
 - [x] **`counting`** con estímulo visual (emojis) en el runner; el resto de tipos se modelan como `recognition` (elección de número), incluida la comparación más/menos.
 - [x] **Currículo Números N1-10** — `src/features/numbers/data/curriculum.ts`: contar, reconocer, ordenar (¿qué número sigue?), comparar, sumar/restar; `registry.ts` amplía a Números.
 - [x] **Verificado (estático)**: `tsc` limpio; `expo export` (ios) empaqueta sin errores.
-- [ ] **Verificar en dispositivo** (tu turno): recorrer los 10 niveles de Números.
+- [X] **Verificar en dispositivo** (tu turno): recorrer los 10 niveles de Números.
 
 **Nota**: las mecánicas de arrastre (drag & drop) y secuencia quedan para el evolutivo; los 10 niveles de Números funcionan con `MultipleChoice` + estímulo de conteo.
 
@@ -92,10 +92,10 @@
 ## Fase 5 — Empaquetado
 *Objetivo: instalarla en los dispositivos reales.*
 
-- [ ] **Pruebas** en iOS y Android (físicos).
-- [ ] **Decidir botón "Donar"** (ocultar en build personal).
-- [ ] **EAS Build** interno → TestFlight (iOS) / APK (Android).
-- [ ] **Instalar** en los dispositivos de los niños.
+- [X] **Pruebas** en iOS y Android (físicos).
+- [X] **Decidir botón "Donar"** (ocultar en build personal).
+- [X] **EAS Build** interno → TestFlight (iOS) / APK (Android).
+- [X] **Instalar** en los dispositivos de los niños.
 
 **Entregable**: la app en las manos de tus hijos. 🎉
 

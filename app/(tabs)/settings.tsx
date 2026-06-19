@@ -6,18 +6,22 @@ import { CARTOON_BUTTON_THEMES } from '@constants/Colors';
 import { THEME } from '@constants/theme';
 import { useSound } from '@hooks/useSound';
 import AudioManager from '@services/audio/AudioManager';
+import SpeechManager from '@services/speech/SpeechManager';
 import { useChildThemeStore } from '@stores/useChildThemeStore';
+import { goToProfileSelect } from '@utils/nav';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { PressableBounce } from '@shared/ui/PressableBounce';
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 const audio = AudioManager.getInstance();
+const speech = SpeechManager.getInstance();
 
 export default function SettingsScreen() {
   const { playTap } = useSound();
   const [musicOn, setMusicOn] = useState(() => audio.isMusicEnabled());
   const [soundOn, setSoundOn] = useState(() => audio.isSoundEnabled());
+  const [voiceOn, setVoiceOn] = useState(() => speech.isEnabled());
   const year = new Date().getFullYear();
   const childType = useChildThemeStore((state) => state.childType);
   const background = childType === 'girl'
@@ -59,7 +63,24 @@ export default function SettingsScreen() {
               </View>
               <PlayStopSwitch isPlaying={soundOn} onToggle={() => { const next = !soundOn; setSoundOn(next); audio.setSoundEnabled(next); }} />
             </View>
+            <View style={styles.controlItem}>
+              <View style={styles.itemContainer}>
+                <Text style={styles.itemEmoji}>🗣️</Text>
+                <OutlinedText
+                  text="Voz"
+                  textStyle={styles.itemText}
+                />
+              </View>
+              <PlayStopSwitch isPlaying={voiceOn} onToggle={() => { const next = !voiceOn; setVoiceOn(next); speech.setEnabled(next); }} />
+            </View>
           </View>
+          <PressableBounce
+            onPress={() => { playTap(); goToProfileSelect(); }}
+            hitSlop={8}
+            style={styles.profileButton}
+          >
+            <Text style={styles.profileText}>Cambiar de perfil</Text>
+          </PressableBounce>
           <PressableBounce
             onPress={() => { router.back(); playTap(); }}
             hitSlop={8}
@@ -180,6 +201,24 @@ const styles = StyleSheet.create({
   backText: {
     color: '#fff',
     fontSize: 24,
+    fontFamily: THEME.fonts.titleExtraBold,
+  },
+  itemEmoji: {
+    fontSize: 28,
+  },
+  profileButton: {
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: CARTOON_BUTTON_THEMES.blueAccent.bg,
+    borderRadius: 16,
+    borderWidth: 3,
+    borderColor: '#2A2A2A',
+    alignItems: 'center',
+  },
+  profileText: {
+    fontSize: 18,
+    color: '#FFF8F8',
     fontFamily: THEME.fonts.titleExtraBold,
   },
   backHighlight: {

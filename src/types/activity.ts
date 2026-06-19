@@ -1,56 +1,87 @@
+// Modelo de dominio de las actividades de aprendizaje.
+// Una Activity es un objeto de DATOS; un único ActivityRunner la interpreta
+// y monta la mecánica de juego correspondiente. Ver docs/TECH_SPEC.md §5.
+
 export type Subject = 'letters' | 'numbers';
 
-export type LetterActivityType =
-  | 'letter_recognition'  // Reconocer una letra entre varias
-  | 'phonics'             // Asociar letra con su sonido
-  | 'word_building'       // Formar palabras con letras
-  | 'syllables';          // Identificar sílabas
+export type ActivityType =
+  // Letras
+  | 'letter_recognition' // reconocer una letra entre opciones
+  | 'phonics' // asociar letra ↔ sonido
+  | 'syllables' // identificar / formar una sílaba
+  | 'word_building' // construir una palabra corta
+  // Números
+  | 'counting' // contar objetos (emojis)
+  | 'number_recognition' // reconocer un número entre opciones
+  | 'ordering' // ordenar una secuencia numérica
+  | 'comparison' // ¿cuál tiene más / menos?
+  | 'basic_operations'; // suma / resta simple
 
-export type NumberActivityType =
-  | 'number_recognition'  // Reconocer un número entre varios
-  | 'counting'            // Contar objetos
-  | 'ordering'            // Ordenar números de menor a mayor
-  | 'basic_operations';   // Suma y resta básica
+// --- Payloads (unión discriminada por `kind`) ---
+// Se discrimina por `kind` y no por ActivityType porque varios tipos
+// comparten la misma forma de datos (p. ej. reconocer letra o número).
 
-export type ActivityType = LetterActivityType | NumberActivityType;
-
-export type InteractionType = 'multiple_choice' | 'drag_and_drop' | 'tap_select' | 'sequence';
-
-export interface Activity {
-  id: string;
-  subject: Subject;
-  type: ActivityType;
-  interaction: InteractionType;
-  level: number;          // 1-10 dificultad progresiva
-  title: string;
-  instruction: string;    // Texto que se lee al niño (TTS)
-  data: ActivityData;
+export interface RecognitionPayload {
+  kind: 'recognition';
+  target: string; // lo que hay que encontrar: 'A', '7'…
+  options: string[]; // opciones mostradas (incluye target)
 }
 
-export type ActivityData =
-  | LetterRecognitionData
-  | CountingData
-  | MultipleChoiceData
-  | OrderingData;
-
-export interface LetterRecognitionData {
-  target: string;         // Letra o número objetivo
-  options: string[];      // Opciones a mostrar
-}
-
-export interface CountingData {
-  count: number;          // Cantidad correcta
-  maxOption: number;      // Número máximo en opciones
-  emoji: string;          // Emoji del objeto a contar
-}
-
-export interface MultipleChoiceData {
-  question: string;
-  correctAnswer: string;
+export interface PhonicsPayload {
+  kind: 'phonics';
+  letter: string; // letra cuyo sonido se pronuncia por TTS
   options: string[];
 }
 
-export interface OrderingData {
-  sequence: number[];     // Secuencia correcta
-  shuffled: number[];     // Secuencia desordenada
+export interface CountingPayload {
+  kind: 'counting';
+  emoji: string; // objeto a contar, p. ej. '🍎'
+  count: number; // cantidad real
+  options: number[];
+}
+
+export interface OrderingPayload {
+  kind: 'ordering';
+  sequence: number[]; // secuencia correcta; se baraja al mostrarla
+}
+
+export interface ComparisonPayload {
+  kind: 'comparison';
+  left: number;
+  right: number;
+  ask: 'more' | 'less';
+}
+
+export interface OperationPayload {
+  kind: 'operation';
+  a: number;
+  b: number;
+  op: '+' | '-';
+  options: number[];
+}
+
+export interface WordPayload {
+  kind: 'word';
+  word: string;
+  syllables: string[];
+  image?: string; // clave de imagen/emoji opcional
+}
+
+export type ActivityPayload =
+  | RecognitionPayload
+  | PhonicsPayload
+  | CountingPayload
+  | OrderingPayload
+  | ComparisonPayload
+  | OperationPayload
+  | WordPayload;
+
+export interface Activity {
+  id: string; // 'L1-rec-01'
+  subject: Subject;
+  type: ActivityType;
+  level: number; // 1..10
+  prompt: string; // texto + base del TTS: "¿Dónde está la A?"
+  payload: ActivityPayload;
+  reward: number; // estrellas que otorga (1..3)
 }

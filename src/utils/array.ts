@@ -1,0 +1,18 @@
+// Utilidades de arrays para generar actividades (barajar, muestrear).
+
+export function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+export function sample<T>(arr: T[], n: number): T[] {
+  return shuffle(arr).slice(0, n);
+}
+
+export function randomItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}

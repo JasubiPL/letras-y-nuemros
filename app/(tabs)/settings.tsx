@@ -1,82 +1,271 @@
-import { StyleSheet, Switch, Pressable, Alert } from 'react-native';
-
-import { Text, View } from '@components/Themed';
+import { MusicIcon } from '@shared/ui/icons/Music';
+import { SoundIcon } from '@shared/ui/icons/SoundIcon';
+import { OutlinedText } from '@shared/ui/OutlinedText';
+import { PlayStopSwitch } from '@shared/ui/PlayStopSwitch';
+import { CARTOON_BUTTON_THEMES } from '@constants/Colors';
 import { THEME } from '@constants/theme';
-import { useSettingsStore } from '@stores/useSettingsStore';
-import { useProgressStore } from '@stores/useProgressStore';
+import { useSound } from '@hooks/useSound';
+import AudioManager from '@services/audio/AudioManager';
+import SpeechManager from '@services/speech/SpeechManager';
+import { useChildThemeStore } from '@stores/useChildThemeStore';
+import { goToProfileSelect } from '@utils/nav';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { PressableBounce } from '@shared/ui/PressableBounce';
+import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+
+const audio = AudioManager.getInstance();
+const speech = SpeechManager.getInstance();
 
 export default function SettingsScreen() {
-  const { musicEnabled, hapticsEnabled, toggleMusic, toggleHaptics } = useSettingsStore();
-  const resetProgress = useProgressStore((s) => s.resetProgress);
-
-  const handleReset = () => {
-    Alert.alert(
-      'Reiniciar Progreso',
-      '¿Estás seguro? Se perderá todo el progreso.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Reiniciar', style: 'destructive', onPress: resetProgress },
-      ]
-    );
-  };
+  const { playTap } = useSound();
+  const [musicOn, setMusicOn] = useState(() => audio.isMusicEnabled());
+  const [soundOn, setSoundOn] = useState(() => audio.isSoundEnabled());
+  const [voiceOn, setVoiceOn] = useState(() => speech.isEnabled());
+  const year = new Date().getFullYear();
+  const childType = useChildThemeStore((state) => state.childType);
+  const background = childType === 'girl'
+    ? require('@assets/images/backgrounds/bg-settings-girl.webp') 
+    : require('@assets/images/backgrounds/bg-settings-boy.webp');
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ajustes</Text>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingLabel}>🎵 Música</Text>
-        <Switch value={musicEnabled} onValueChange={toggleMusic} />
+    <ImageBackground
+      source={background}
+      style={styles.background}
+    >
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Ajustes</Text>
+          <View style={ styles.controls}>
+            <View style={styles.controlItem}>
+              <View style={styles.itemContainer}>
+                <OutlinedText
+                  svgRenderer={(color) => <MusicIcon color={color} width={32} height={32} />}
+                  outlineColor='#000000'
+                />
+                <OutlinedText
+                  text="Música" 
+                  textStyle={styles.itemText}
+                />
+              </View>
+              <PlayStopSwitch isPlaying={musicOn} onToggle={() => { const next = !musicOn; setMusicOn(next); audio.setMusicEnabled(next); }} />
+            </View>
+            <View style={styles.controlItem}>
+              <View style={styles.itemContainer}>
+                <OutlinedText
+                  svgRenderer={(color) => <SoundIcon color={color} width={32} height={32} />}
+                  outlineColor='#000000'
+                />
+                <OutlinedText
+                  text="Efectos" 
+                  textStyle={styles.itemText}
+                />
+              </View>
+              <PlayStopSwitch isPlaying={soundOn} onToggle={() => { const next = !soundOn; setSoundOn(next); audio.setSoundEnabled(next); }} />
+            </View>
+            <View style={styles.controlItem}>
+              <View style={styles.itemContainer}>
+                <Text style={styles.itemEmoji}>🗣️</Text>
+                <OutlinedText
+                  text="Voz"
+                  textStyle={styles.itemText}
+                />
+              </View>
+              <PlayStopSwitch isPlaying={voiceOn} onToggle={() => { const next = !voiceOn; setVoiceOn(next); speech.setEnabled(next); }} />
+            </View>
+          </View>
+          <PressableBounce
+            onPress={() => { playTap(); goToProfileSelect(); }}
+            hitSlop={8}
+            style={styles.profileButton}
+          >
+            <Text style={styles.profileText}>Cambiar de perfil</Text>
+          </PressableBounce>
+          <PressableBounce
+            onPress={() => { router.back(); playTap(); }}
+            hitSlop={8}
+            style={styles.backButton}
+          >
+            <Text style={styles.backText}>Volver</Text>
+            <View style={styles.backHighlight} />
+            <View style={styles.backShadow} />
+          </PressableBounce>
+        </View>
       </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.settingLabel}>📳 Vibración</Text>
-        <Switch value={hapticsEnabled} onValueChange={toggleHaptics} />
+      <View style={styles.creditFooter} pointerEvents="none">
+        <View style={styles.creditPill}>
+          <Text style={styles.creditLabel}>Desarrollado por</Text>
+          <Image
+            source={require('@assets/images/logo-jasubip.png')}
+            style={styles.creditLogo}
+            resizeMode="contain"
+            accessibilityLabel="Jasubip"
+          />
+          <Text style={styles.creditLegend}>
+            © {year} Jasubip · Todos los derechos reservados
+          </Text>
+        </View>
       </View>
-
-      <View style={styles.divider} />
-
-      <Pressable style={styles.resetButton} onPress={handleReset}>
-        <Text style={styles.resetText}>Reiniciar Progreso</Text>
-      </Pressable>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
   container: {
     flex: 1,
-    padding: THEME.spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    padding: 16,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: THEME.spacing.xl,
+  header:{
+    marginTop: 36,
+    padding: 16,
+    alignItems: 'center',
   },
-  settingRow: {
+  title:{
+    marginTop: -44,
+    fontSize: 24,
+    width: '70%',
+    textAlign: 'center',
+    fontFamily: THEME.fonts.titleExtraBold,
+    color: '#fff',
+    backgroundColor: CARTOON_BUTTON_THEMES.gold.bg,
+    paddingHorizontal: 32,
+    paddingVertical: 8,
+    textShadowColor: '#000',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 1,
+    borderRadius: 8,
+  },
+  content:{
+    backgroundColor: CARTOON_BUTTON_THEMES.gold.highlight,
+    display: 'flex',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 24,
+    width: '100%',
+    borderWidth: 6,
+    borderColor: CARTOON_BUTTON_THEMES.gold.bg,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  controls: {
+    marginTop: 16,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+  },
+  controlItem:{
+    width: '100%',
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: THEME.spacing.md,
-    backgroundColor: 'transparent',
+    backgroundColor: CARTOON_BUTTON_THEMES.gold.bg,
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: CARTOON_BUTTON_THEMES.gold.shadow,
   },
-  settingLabel: {
+  itemContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  itemText: {
+    marginTop: 2,
+    color: '#fff',
+    fontSize: 24,
+    fontFamily: THEME.fonts.bodyBold,
+  },
+  backButton: {
+    padding: 16,
+    backgroundColor: CARTOON_BUTTON_THEMES.redAccent.bg,
+    borderRadius: 16,
+    marginTop: 24,
+    width: '50%',
+    alignItems: 'center',
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  backText: {
+    color: '#fff',
+    fontSize: 24,
+    fontFamily: THEME.fonts.titleExtraBold,
+  },
+  itemEmoji: {
+    fontSize: 28,
+  },
+  profileButton: {
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: CARTOON_BUTTON_THEMES.blueAccent.bg,
+    borderRadius: 16,
+    borderWidth: 3,
+    borderColor: '#2A2A2A',
+    alignItems: 'center',
+  },
+  profileText: {
     fontSize: 18,
+    color: '#FFF8F8',
+    fontFamily: THEME.fonts.titleExtraBold,
   },
-  divider: {
-    height: 1,
+  backHighlight: {
+    position: 'absolute',
+    width: '100%',
+    height: 8,
+    borderRadius: 4,
+    top: 4,
+    left: '15%',
+    backgroundColor: 'rgba(255,255,255,0.6)',
+  },
+  backShadow: {
+    position: 'absolute',
+    width: '150%',
+    height: 12,
+    bottom: 0,
+    left: 0,
     backgroundColor: 'rgba(0,0,0,0.1)',
-    marginVertical: THEME.spacing.lg,
   },
-  resetButton: {
-    padding: THEME.spacing.md,
-    borderRadius: THEME.borderRadius.md,
-    backgroundColor: THEME.colors.error,
+  creditFooter: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
     alignItems: 'center',
   },
-  resetText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
+  creditPill: {
+    alignItems: 'center',
+    gap: 2,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 16,
+    backgroundColor: 'rgba(0,0,0,0.32)',
   },
-});
+  creditLabel: {
+    color: 'rgba(255,255,255,0.85)',
+    fontSize: 12,
+    fontFamily: THEME.fonts.body,
+  },
+  creditLogo: {
+    width: 150,
+    height: 38,
+    marginVertical: 2,
+  },
+  creditLegend: {
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 10,
+    fontFamily: THEME.fonts.body,
+  },
+})

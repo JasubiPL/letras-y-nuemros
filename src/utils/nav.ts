@@ -9,6 +9,11 @@ import { router, type Href } from 'expo-router';
 // Las rutas existen como ficheros, así que el cast es seguro; centralizarlo
 // aquí mantiene las pantallas limpias y deja un único punto a revisar.
 
+export function goToNumbersMenu(): void {
+  // Ruta nueva aún no presente en los tipos generados de expo-router; cast acotado.
+  router.push('/(tabs)/numbersScreens/numbersMenu' as unknown as Href);
+}
+
 export function goToPlay(subject: Subject, level: number): void {
   router.push({
     pathname: '/activity/play',

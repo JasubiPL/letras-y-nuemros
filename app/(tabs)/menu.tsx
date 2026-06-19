@@ -5,6 +5,7 @@ import { BackArrowIcon } from '@shared/ui/icons/BackArrowIcon';
 import { OutlinedRainbowText } from '@shared/ui/OutlinedRainbowText';
 import type { CartoonColor } from '@shared/ui/types';
 import { useChildThemeStore } from '@stores/useChildThemeStore';
+import { goToNumbersMenu } from '@utils/nav';
 import { useRouter } from 'expo-router';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 
@@ -76,7 +77,10 @@ export default function MenuScreen() {
           }
           label="Números"
           color={colorButton[selectedChildType][1]}
-          onPress={() => { playTap(); }}
+          onPress={() => {
+            playTap();
+            goToNumbersMenu();
+          }}
         />
         <CartoonButton
           iconAbsolute

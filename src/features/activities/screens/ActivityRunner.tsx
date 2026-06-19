@@ -62,16 +62,25 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
   );
 
   const payload = current?.payload;
-  const options =
-    payload && (payload.kind === 'recognition' || payload.kind === 'phonics')
-      ? payload.options
-      : [];
-  const correct =
-    payload?.kind === 'recognition'
-      ? payload.target
-      : payload?.kind === 'phonics'
-        ? payload.letter
-        : '';
+
+  let options: string[] = [];
+  let correct = '';
+  if (payload?.kind === 'recognition') {
+    options = payload.options;
+    correct = payload.target;
+  } else if (payload?.kind === 'phonics') {
+    options = payload.options;
+    correct = payload.letter;
+  } else if (payload?.kind === 'counting') {
+    options = payload.options.map(String);
+    correct = String(payload.count);
+  }
+
+  // Estímulo visual para contar: los emojis a contar.
+  const stimulus =
+    payload?.kind === 'counting'
+      ? Array.from({ length: payload.count }, () => payload.emoji).join(' ')
+      : null;
 
   const finish = () => {
     goToComplete(subject, level, correctRef.current, activities.length);
@@ -151,6 +160,7 @@ export function ActivityRunner({ subject, level, activities }: ActivityRunnerPro
           entering={FadeIn.duration(300)}
           style={styles.stage}
         >
+          {stimulus && <Text style={styles.stimulus}>{stimulus}</Text>}
           <Text style={styles.prompt}>{current.prompt}</Text>
           <MultipleChoice
             key={`${current.id}-${round}`}
@@ -226,6 +236,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: THEME.fonts.titleExtraBold,
     color: THEME.colors.text.primary,
+    paddingHorizontal: 12,
+  },
+  stimulus: {
+    fontSize: 40,
+    lineHeight: 52,
+    textAlign: 'center',
     paddingHorizontal: 12,
   },
   lives: {
